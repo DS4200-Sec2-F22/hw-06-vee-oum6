@@ -4,12 +4,35 @@
 
 <head>
   <meta charset='utf-8'>
+  <script type="text/javascript" src="js/d3.v6.1.1/d3.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+ 
+  <title>hw-06</title>
 
 </head>
 
 
 <body>
- 
+  <header><h1>hw-06 - D3 Brushing & Linking</h1></header>
+  <div class="flex-container">
+    <div class="column1">
+      <h2>Petal_Length vs. Sepal_Length</h2>
+       <div id="scatterplot"></div>
+    </div>
+    <div class="column2">
+      <h2>Petal_Width vs. Sepal_Width</h2>
+
+      <div id="scatterplot2"></div>
+
+    </div>
+    <div class="column3">
+      <h2>Counts of Species</h2>
+      <div id="barchart"></div>
+    </div>
+  </div>
+  
+ <!-- connects the html file to the javascript file  -->
+ <script src="js/program.js"></script>
 </body>
 
 </html>

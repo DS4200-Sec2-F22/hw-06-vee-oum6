@@ -1,0 +1,32 @@
+body{
+    font-family: Arial;
+    text-align: center;
+}
+h2{
+    text-align: center;
+}
+.Column1 {
+   
+    flex: 33.33%;
+    min-height: 100vh;
+    padding: 10px;
+}
+.column2 {
+    
+    flex: 33.33%;
+    min-height: 100vh;
+    padding: 10px;
+}
+.column3 {
+    
+    flex: 33.33%;
+    min-height: 100vh;
+    padding: 10px;
+}
+.flex-container{
+    display: flex;
+    width: 100%;
+    padding: 0;
+}
+
+
