@@ -59,6 +59,8 @@ function build_interactive_scatter() {
             .attr("class", (d) => { return d.Species });
     });
 
+
+
 };
 
 build_interactive_scatter();
@@ -112,6 +114,17 @@ function build_interactive_scatter2() {
             .attr("r", 4)
             .style("fill", function (d) { return Scattercolor2(d.Species) })
             .attr("class", (d) => { return d.Species });
+
+        //Add Brushing
+        FRAME2.call(d3.brush()
+            .extent([[MARGINS.left, MARGINS.top], [FRAME_WIDTH, (FRAME_HEIGHT-MARGINS.bottom)]])
+            .on("brush end", updateChart)
+        )
+        //triggered when brushing is performed
+        function updateChart(){
+            extent = d3.event.selection
+           // isBrushed = 
+        };
     });
 
 };
