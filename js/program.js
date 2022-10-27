@@ -15,9 +15,22 @@ const FRAME1 = d3.select("#scatterplot")
     .attr("class", "frame");
 
 
+//Creating the frame -- scatterplot
+const FRAME2 = d3.select("#scatterplot2")
+    .append("svg")
+    .attr("height", FRAME_HEIGHT)
+    .attr("width", FRAME_WIDTH)
+    .attr("class", "frame")
+
+//Creating the frame -- bar chart plot
+const FRAME3 = d3.select("#barchart")
+    .append("svg")
+    .attr("height", FRAME_HEIGHT)
+    .attr("width", FRAME_WIDTH)
+    .attr("class", "frame");
 
 // build the scatterplot onto the canvas using the data in the given file 
-function build_interactive_scatter() {
+function buildAllPlots() {
     // read data from the file 
     d3.csv("data/iris.csv").then((data) => {
         //checking the data is printing
@@ -47,7 +60,7 @@ function build_interactive_scatter() {
             .call(d3.axisLeft(Y_SCALE).ticks(20))
             .attr("font-size", "10px");
         // append all the points that are read in from the file 
-        FRAME1.selectAll("points")
+        Frame1Points = FRAME1.selectAll("points")
             .data(data)
             .enter()
             .append("circle")
@@ -57,28 +70,7 @@ function build_interactive_scatter() {
             .attr("r", 4)
             .style("fill", function (d) { return Scattercolor1(d.Species) })
             .attr("class", (d) => { return d.Species });
-    });
 
-
-
-};
-
-build_interactive_scatter();
-
-
-//Creating the frame -- scatterplot
-const FRAME2 = d3.select("#scatterplot2")
-    .append("svg")
-    .attr("height", FRAME_HEIGHT)
-    .attr("width", FRAME_WIDTH)
-    .attr("class", "frame")
-
-// build the scatterplot onto the canvas using the data in the given file 
-function build_interactive_scatter2() {
-    // read data from the file 
-    d3.csv("data/iris.csv").then((data) => {
-        //checking the data is printing
-        console.log(data)
         //find Max X & Y
         const X_MAX2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
         console.log(X_MAX2)
@@ -104,7 +96,7 @@ function build_interactive_scatter2() {
             .call(d3.axisLeft(Y_SCALE2).ticks(16))
             .attr("font-size", "10px");
         // append all the points that are read in from the file 
-        FRAME2.selectAll("points")
+        Frame2Points = FRAME2.selectAll("points")
             .data(data)
             .enter()
             .append("circle")
@@ -115,34 +107,21 @@ function build_interactive_scatter2() {
             .style("fill", function (d) { return Scattercolor2(d.Species) })
             .attr("class", (d) => { return d.Species });
 
-        //Add Brushing
+
+        //Add BRUSHING and LINKING
         FRAME2.call(d3.brush()
-            .extent([[MARGINS.left, MARGINS.top], [FRAME_WIDTH, (FRAME_HEIGHT-MARGINS.bottom)]])
-            .on("brush end", updateChart)
-        )
+            .extent([[MARGINS.left, MARGINS.top], [FRAME_WIDTH, (FRAME_HEIGHT - MARGINS.bottom)]])
+            .on("brush", updateChart)
+        )   
+
         //triggered when brushing is performed
         function updateChart(){
             extent = d3.event.selection
            // isBrushed = 
         };
-    });
 
-};
-build_interactive_scatter2();
+        //FRAME 3
 
-//Creating the frame -- bar chart plot
-const FRAME3 = d3.select("#barchart")
-    .append("svg")
-    .attr("height", FRAME_HEIGHT)
-    .attr("width", FRAME_WIDTH)
-    .attr("class", "frame");
-//build interactive bar plot
-function build_interactive_bar() {
-    //opening file - scatter data 
-    d3.csv("data/iris.csv").then((data) => {
-        //checking that the data is printing
-        console.log(data);
-        // set specific color for each species
         const Barcolor = d3.scaleOrdinal()
             .domain(["setosa", "versicolor", "virginica"])
             .range(["#2e8b57", "#ff7f50", "#40e0d0"])
@@ -159,7 +138,7 @@ function build_interactive_bar() {
             .range([VIS_HEIGHT, 100]);
 
         //add X_Scale and Y_Scale to plot bars
-        FRAME3.selectAll("bars")
+        Frame3Bars=FRAME3.selectAll("bars")
             .data(data)
             .enter()
             .append("rect")
@@ -181,8 +160,12 @@ function build_interactive_bar() {
             .attr("transform", "translate(" + MARGINS.left + "," + MARGINS.top + ")")
             .call(d3.axisLeft(Y_SCALE3))
             .attr("font-size", "15px");
+
+
     });
 
 
-}
-build_interactive_bar();
+
+};
+
+buildAllPlots();
