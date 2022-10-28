@@ -28,3 +28,21 @@ h2{
     width: 100%;
     padding: 0;
 }
+
+.selected {
+    stroke: orange;
+    stroke-width: 2;
+    opacity: 100%;
+}
+
+.setosa {
+	opacity: 50%;
+}
+
+.versicolor {
+	opacity: 50%;
+}
+
+.virginica {
+	opacity: 50%;
+}

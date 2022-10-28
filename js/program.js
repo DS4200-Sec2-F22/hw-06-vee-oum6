@@ -108,18 +108,6 @@ function buildAllPlots() {
             .attr("class", (d) => { return d.Species });
 
 
-        //Add BRUSHING and LINKING
-        FRAME2.call(d3.brush()
-            .extent([[MARGINS.left, MARGINS.top], [FRAME_WIDTH, (FRAME_HEIGHT - MARGINS.bottom)]])
-            .on("brush", updateChart)
-        )   
-
-        //triggered when brushing is performed
-        function updateChart(){
-            extent = d3.event.selection
-           // isBrushed = 
-        };
-
         //FRAME 3
 
         const Barcolor = d3.scaleOrdinal()
@@ -161,6 +149,49 @@ function buildAllPlots() {
             .call(d3.axisLeft(Y_SCALE3))
             .attr("font-size", "15px");
 
+        //Add BRUSHING and LINKING
+        FRAME2.call(d3.brush()
+            .extent([[MARGINS.left, MARGINS.top], [FRAME_WIDTH, (FRAME_HEIGHT - MARGINS.bottom)]])
+            .on("brush", changeChart)
+        )
+
+
+        function changeChart(event) {
+
+            // coordinates of the selected region
+            const selection = event.selection;
+
+            // empty set to store selected species names
+            let selectedSpecies = new Set();
+
+            // clears highlights when brush restarts
+            if (selection === null) {
+                Frame3Bars.classed('selected', false);
+                Frame1Points.classed('selected', false);
+                Frame2Points.classed("selected", false);
+            } 
+            // gives the border/opacity for all plots
+            else {
+
+                Frame2Points.classed("selected", (d) => {
+                    isSelected = isBrushed(selection, (MARGINS.left + X_SCALE2(d.Sepal_Width)), (MARGINS.top + Y_SCALE2(d.Petal_Width)));
+                    if (isSelected) {
+                        selectedSpecies.add(d.Species);
+                    }
+                    return isSelected});
+
+                // highlights corresponding points in the left plot
+                Frame1Points.classed("selected", (d) => isBrushed(selection, (MARGINS.left + X_SCALE2(d.Sepal_Width)), (MARGINS.top + Y_SCALE2(d.Petal_Width))));
+                
+                // highlights bars based on class being in the selectedSpecies set
+                Frame3Bars.classed("selected", (d) => {return selectedSpecies.has(d.Species);})
+            };
+        };
+
+        // returns if a point is in the brush selection
+        function isBrushed(brush_coords, cx, cy) {
+            return brush_coords[0][0] <= cx && cx <= brush_coords[1][0] && brush_coords[0][1] <= cy && cy <= brush_coords[1][1];
+        };
 
     });
 
